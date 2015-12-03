@@ -287,9 +287,9 @@ KBUILD_IMAGE := zImage
 endif
 
 # Build the DT binary blobs if we have OF configured
-ifeq ($(CONFIG_USE_OF),y)
-KBUILD_DTBS := dtbs
-endif
+#ifeq ($(CONFIG_USE_OF),y)
+#KBUILD_DTBS := dtbs
+#endif
 
 all:	$(KBUILD_IMAGE) $(KBUILD_DTBS)
 
