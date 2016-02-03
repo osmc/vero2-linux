@@ -377,8 +377,7 @@ KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 KBUILD_CFLAGS   += -Werror=enum-compare \
 		   -Werror=comment \
 		   -Werror=implicit-int \
-		   -Werror=missing-braces \
-		   -Werror=unused-value
+		   -Werror=missing-braces 
 KBUILD_AFLAGS_KERNEL :=
 KBUILD_CFLAGS_KERNEL :=
 KBUILD_AFLAGS   := -D__ASSEMBLY__
