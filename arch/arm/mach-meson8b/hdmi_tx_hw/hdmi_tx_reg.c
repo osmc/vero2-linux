@@ -97,7 +97,6 @@ void hdmi_wr_reg(unsigned int addr, unsigned int data)
             {\
                 if (3500 == cnt++)\
                 {\
-                    hdmi_print(INF, CEC "waiting aocec free time out.\n");\
                     break;\
                 }\
             }\
