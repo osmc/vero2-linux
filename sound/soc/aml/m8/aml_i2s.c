@@ -139,15 +139,15 @@ static const struct snd_pcm_hardware aml_i2s_hardware = {
 
     .formats        = SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S24_LE | SNDRV_PCM_FMTBIT_S32_LE,
 
-    .period_bytes_min   = 64,
-    .period_bytes_max   = 32 * 1024 * 2,
+    .period_bytes_min   = 32,
+    .period_bytes_max   = 32 * 1024,
     .periods_min        = 2,
     .periods_max        = 1024,
-    .buffer_bytes_max   = 128 * 1024 * 2 * 2,
+    .buffer_bytes_max   = 32 * 1024 * 2,
 
     .rate_min = 8000,
-    .rate_max = 48000,
-    .channels_min = 2,
+    .rate_max = 192000,
+    .channels_min = 1,
     .channels_max = 8,
     .fifo_size = 0,
 };
