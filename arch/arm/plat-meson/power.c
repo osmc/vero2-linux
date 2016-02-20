@@ -76,10 +76,10 @@ void meson_power_off_prepare(void)
 void meson_power_off(void)
 {
 	printk("meson power off \n");
-	if(reboot_flag)
-		meson_common_restart('h',"uboot_suspend");
-	else
-		meson_common_restart('h',"charging_reboot");
+	//if(reboot_flag)
+	//	meson_common_restart('h',"uboot_suspend");
+	//else
+	//	meson_common_restart('h',"charging_reboot");
 }
 
 void meson_power_idle(void)
