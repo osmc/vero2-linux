@@ -88,8 +88,6 @@ EXPORT_SYMBOL(aml_audio_hw_trigger);
 // timer count: 16bits
 #define TIMER_COUNT    100
 
-#define USE_HW_TIMER
-
 #ifdef USE_HW_TIMER
 static DEFINE_MUTEX(timer_mutex);
 static int hw_timer_init = 0;
