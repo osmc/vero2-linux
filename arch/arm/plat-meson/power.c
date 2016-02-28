@@ -71,6 +71,7 @@ void meson_common_restart(char mode,const char *cmd)
 void meson_power_off_prepare(void)
 {
 	printk("meson prepare power off \n");
+	machine_halt();
 }
 
 void meson_power_off(void)
