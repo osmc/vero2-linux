@@ -1921,9 +1921,12 @@ void root_func(){
 //$$ L2 PROP_U32 10 = "amlogic,clrmask"
 //$$ L2 PROP_STR 6 = "amlogic,pins"
         audio_pins:audio_pin{
-            amlogic,setmask=<10 0x78000008>;
-            amlogic,clrmask=<10 0x80002000>;
-            amlogic,pins = "GPIOAO_8","GPIOAO_9","GPIOAO_10","GPIOAO_11","GPIOAO_13";
+            amlogic,setmask=<10 0x78000008
+                             1 0x80>;
+            amlogic,clrmask=<10 0x80002000
+                             1 0x10000
+                             3 0x40000>;
+            amlogic,pins = "GPIOAO_8","GPIOAO_9","GPIOAO_10","GPIOAO_11","GPIOY_3";
         };
 
 
