@@ -912,9 +912,13 @@ void read_mac_from_nand(struct net_device *ndev)
 	u8 mac[ETH_ALEN];
 	char *endp;
 	int j;
-	ret = get_aml_key_kernel("mac", print_buff, 0);
-	extenal_api_key_set_version("auto");
-	printk("ret = %d\nprint_buff=%s\n", ret, print_buff);
+	for (j=0; j < 2; j++)
+	{
+		ret = get_aml_key_kernel("mac", print_buff, 0);
+		extenal_api_key_set_version("auto3");
+		printk("ret = %d\nprint_buff=%s\n", ret, print_buff);
+		if (ret >=0) break;
+	}
 	if (ret >= 0) {
 		strcpy(ndev->dev_addr, print_buff);
 	for(j=0; j < ETH_ALEN; j++)
@@ -1669,7 +1673,7 @@ static void config_mac_addr(struct net_device *dev, void *mac)
 	if(g_mac_addr_setup)
 		memcpy(dev->dev_addr, mac, 6);
 	else
-		random_ether_addr(dev->dev_addr);
+		memcpy(dev->dev_addr, &DEFMAC, 6);
 
 	write_mac_addr(dev, dev->dev_addr);
 }
