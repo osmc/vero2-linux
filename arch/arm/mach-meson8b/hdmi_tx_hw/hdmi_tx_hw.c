@@ -1726,75 +1726,12 @@ static void hdmitx_config_tvenc_reg(int vic, unsigned reg, unsigned val)
     }
 }
 
-#ifdef CONFIG_AML_VOUT_FRAMERATE_AUTOMATION
-//
-// func: hdmitx_set_pll_fr_auto
-// params: none
-// return:
-//		1: current vmode is special and clock setting handled
-//		0: current vmode is not special and clock setting not handled
-//
-// desc:
-//		special vmode has same hdmi vic with normal mode, such as 1080p59hz - 1080p60hz
-//	so pll should not only be set according hdmi vic.
-//
-extern const vinfo_t *get_current_vinfo(void);
-static int hdmitx_set_pll_fr_auto(void)
-{
-	int ret = 0;
-	const vinfo_t *pvinfo = get_current_vinfo();
-
-	if( strncmp(pvinfo->name, "480p59hz", strlen("480p59hz")) == 0 )
-	{
-		set_vmode_clk(VMODE_480P_59HZ);
-		ret = 1;
-	}
-	else if( strncmp(pvinfo->name, "720p59hz", strlen("720p59hz")) == 0 )
-	{
-		set_vmode_clk(VMODE_720P_59HZ);
-		ret = 1;
-	}
-	else if( strncmp(pvinfo->name, "1080i59hz", strlen("1080i59hz")) == 0 )
-	{
-		set_vmode_clk(VMODE_1080I_59HZ);
-		ret = 1;
-	}
-	else if( strncmp(pvinfo->name, "1080p59hz", strlen("1080p59hz")) == 0 )
-	{
-		set_vmode_clk(VMODE_1080P_59HZ);
-		ret = 1;
-	}
-	else if( strncmp(pvinfo->name, "1080p23hz", strlen("1080p23hz")) == 0 )
-	{
-		set_vmode_clk(VMODE_1080P_23HZ);
-		ret = 1;
-	}
-	else if( strncmp(pvinfo->name, "4k2k29hz", strlen("4k2k29hz")) == 0 )
-	{
-		set_vmode_clk(VMODE_4K2K_29HZ);
-		ret = 1;
-	}
-	else if( strncmp(pvinfo->name, "4k2k23hz", strlen("4k2k23hz")) == 0 )
-	{
-		set_vmode_clk(VMODE_4K2K_23HZ);
-		ret = 1;
-	}
-
-	return ret;
-}
-#endif
-
 static void hdmitx_set_pll(Hdmi_tx_video_para_t *param)
 {
     hdmi_print(IMP, SYS "set pll\n");
     hdmi_print(IMP, SYS "param->VIC:%d\n", param->VIC);
 
     cur_vout_index = get_cur_vout_index();
-
-#ifdef CONFIG_AML_VOUT_FRAMERATE_AUTOMATION
-	if( hdmitx_set_pll_fr_auto() )
-		return ;
-#endif
 
     switch(param->VIC)
     {
@@ -2156,29 +2093,6 @@ static Cts_conf_tab cts_table_192k[] = {
     {23296, 297000 * 1000 / 1001, 281250},
 };
 
-static Cts_conf_tab cts_table_48k[] = {
-    {6144,  27000,  27000},
-    {6144,  54000,  54000},
-    {6144,  74250,  74250},
-    {23296,  74250 * 1000 / 1001, 140625},
-    {6144, 148500, 148500},
-    {5824, 148500 * 1000 / 1001, 140625},
-    {5120, 297000, 247500},
-    {5824, 297000 * 1000 / 1001, 281250},
-};
-
-static unsigned int get_n_48k(unsigned int clk)
-{
-    int i;
-
-    for (i = 0; i < ARRAY_SIZE(cts_table_48k); i++) {
-        if (clk == cts_table_48k[i].tmds_clk)
-            return cts_table_48k[i].fixed_n;
-    }
-
-    return 0;
-}
-
 static unsigned int get_cts(unsigned int clk)
 {
     int i;
@@ -2222,47 +2136,12 @@ static Vic_attr_map vic_attr_map_table[] = {
     {HDMI_4k2k_smpte_24,    297000},
 };
 
-#ifdef CONFIG_AML_VOUT_FRAMERATE_AUTOMATION
-
-const static char *fr_auto_mode[] = {
-    "480p59hz",
-    "720p59hz",
-    "1080i59hz",
-    "1080p59hz",
-    "1080p23hz",
-    "4k2k29hz",
-    "4k2k23hz",
-};
-
-static int hdmitx_is_framerate_automation(void)
-{
-    int i;
-    const vinfo_t *vinfo = get_current_vinfo();
-    for (i = 0; i < ARRAY_SIZE(fr_auto_mode); i ++) {
-        if (strncmp(vinfo->name, fr_auto_mode[i], strlen(fr_auto_mode[i])) == 0) {
-            return 1;
-        }
-    }
-    return 0;
-}
-
-#endif
-
 static unsigned int vic_map_clk(HDMI_Video_Codes_t vic)
 {
     int i;
     for (i = 0; i < ARRAY_SIZE(vic_attr_map_table); i++) {
         if(vic == vic_attr_map_table[i].VIC)
-#ifndef CONFIG_AML_VOUT_FRAMERATE_AUTOMATION
-            return vic_attr_map_table[i].tmds_clk;
-#else
-        {
-            if (hdmitx_is_framerate_automation())
-                return ((vic_attr_map_table[i].tmds_clk) * 1000 / 1001);
-            else
-                return vic_attr_map_table[i].tmds_clk;
-        }
-#endif
+		return vic_attr_map_table[i].tmds_clk;
     }
     return 0;
 }
@@ -2303,52 +2182,13 @@ static void hdmitx_set_aud_cts(audio_type_t type, Hdmi_tx_audio_cts_t cts_mode, 
     }
 }
 
-static unsigned int hdmitx_get_aud_n(HDMI_Video_Codes_t vic)
-{
-    unsigned int n_val = 0;
-    unsigned int clk = vic_map_clk(vic);
-    if (clk) {
-        n_val = get_n_48k(clk);
-        printk("get n = %d\n", n_val);
-        if (!n_val) {
-            hdmi_print(ERR, AUD "not find n\n");
-            return 0;
-        }
-    }
-    else {
-        hdmi_print(ERR, AUD "not find tmds clk\n");
-        return 0;
-    }
-    return n_val;
-}
-
 static unsigned int audio_N_1080p24=0;
-static void hdmitx_set_aud_n(void)
-{
-#ifdef CONFIG_AML_VOUT_FRAMERATE_AUTOMATION
-    unsigned int audio_N_para = 6272 ;
-    unsigned int audio_N_tolerance = 3;
-    const vinfo_t *vinfo = get_current_vinfo();
-    if (strncmp(vinfo->name, "1080p23hz", strlen("1080p23hz")) == 0) {
-        audio_N_para = 23296;
-        hdmi_wr_reg(TX_SYS1_ACR_N_0, (audio_N_para&0xff)); // N[7:0]
-        hdmi_wr_reg(TX_SYS1_ACR_N_1, (audio_N_para>>8)&0xff); // N[15:8]
-        hdmi_wr_reg(TX_SYS1_ACR_N_2, (audio_N_tolerance<<4)|((audio_N_para>>16)&0xf)); // N[19:16]
-    }
-    else if (strncmp(vinfo->name, "1080p24hz", strlen("1080p24hz")) == 0) {
-        audio_N_para = audio_N_1080p24;
-        hdmi_wr_reg(TX_SYS1_ACR_N_0, (audio_N_para&0xff)); // N[7:0]
-        hdmi_wr_reg(TX_SYS1_ACR_N_1, (audio_N_para>>8)&0xff); // N[15:8]
-        hdmi_wr_reg(TX_SYS1_ACR_N_2, (audio_N_tolerance<<4)|((audio_N_para>>16)&0xf)); // N[19:16]
-    }
-#endif
-}
+static void hdmitx_set_aud_n(void) { return ; } /* Keep struct happy */
 static int hdmitx_set_audmode(struct hdmi_tx_dev_s* hdmitx_device, Hdmi_tx_audio_para_t* audio_param)
 {
     unsigned int audio_N_para = 6272;
     unsigned int audio_N_tolerance = 3;
 //    unsigned int audio_CTS = 30000;
-    const vinfo_t *vinfo = get_current_vinfo();
     hdmi_print(INF, AUD "audio channel num is %d\n", hdmitx_device->cur_audio_param.channel_num);
 
     hdmi_wr_reg(TX_PACKET_CONTROL_2, hdmi_rd_reg(TX_PACKET_CONTROL_2) & (~(1<<3)));
@@ -2494,12 +2334,6 @@ static int hdmitx_set_audmode(struct hdmi_tx_dev_s* hdmitx_device, Hdmi_tx_audio
         default:
             break;
     }
-    if (audio_param->sample_rate == FS_48K) {
-#ifdef CONFIG_AML_VOUT_FRAMERATE_AUTOMATION
-        if (strncmp(vinfo->name, "1080p23hz", strlen("1080p23hz")) == 0)
-            audio_N_para=hdmitx_get_aud_n(hdmitx_device->cur_VIC);
-#endif
-    }
 
     hdmitx_set_aud_pkt_type(audio_param->type);
 
@@ -2538,10 +2372,7 @@ static int hdmitx_set_audmode(struct hdmi_tx_dev_s* hdmitx_device, Hdmi_tx_audio
         default:
             break;
     }
-    if (strncmp(vinfo->name, "1080p24hz", strlen("1080p24hz")) == 0)
-    {
-        audio_N_1080p24=audio_N_para;
-    }
+    audio_N_1080p24 = audio_N_para;
     hdmi_wr_reg(TX_SYS1_ACR_N_0, (audio_N_para&0xff)); // N[7:0]
     hdmi_wr_reg(TX_SYS1_ACR_N_1, (audio_N_para>>8)&0xff); // N[15:8]
     hdmi_wr_reg(TX_SYS1_ACR_N_2, (audio_N_tolerance<<4)|((audio_N_para>>16)&0xf)); // N[19:16]
