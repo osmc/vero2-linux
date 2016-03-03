@@ -450,15 +450,6 @@ static int set_disp_mode_auto(void)
         case HDMI_3840x2160p30_16x9:
         case HDMI_4096x2160p24_256x135:
             hdmitx_special_handler_video(&hdmitx_device);
-            if (IS_MESON_M8_CPU && hdmitx_is_special_tv_process()) {
-                unsigned ret = 0;
-                printk("%s[%d]\n", __func__, __LINE__);
-                set_vmode_clk(VMODE_4K2K_30HZ);
-                msleep(200);
-                ret = reset_hpll();
-                if (!ret)
-                    reset_hpll();
-            }
             break;
         default:
             break;
@@ -1578,8 +1569,6 @@ static void hdmitx_pwr_init(struct hdmi_pwr_ctl *ctl)
     }
 }
 
-extern void register_hdmi_is_special_tv_func( int (*pfunc)(void) );
-
 static int amhdmitx_probe(struct platform_device *pdev)
 {
     extern struct switch_dev lang_dev;
@@ -1658,7 +1647,6 @@ static int amhdmitx_probe(struct platform_device *pdev)
     vout2_register_client(&hdmitx_notifier_nb_v2);
 #endif
     aout_register_client(&hdmitx_notifier_nb_a);
-    register_hdmi_is_special_tv_func(hdmitx_is_special_tv);
 #ifdef CONFIG_USE_OF
     if(pdev->dev.of_node){
         memset(&hdmitx_device.config_data, 0, sizeof(struct hdmi_config_platform_data));
