@@ -974,6 +974,9 @@ void cec_active_source_rx(cec_rx_message_t* pcec_message)
 
 void cec_active_source_smp(void)
 {
+    #if 1
+        return;
+    #endif
     unsigned char msg[4];
     unsigned char index = cec_global_info.my_node_index;
     unsigned char phy_addr_ab = (aml_read_reg32(P_AO_DEBUG_REG1) >> 8) & 0xff;
