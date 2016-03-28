@@ -223,6 +223,7 @@ static CLASS_ATTR(env, S_IWUSR | S_IRUGO, env_show, env_store);
 
 int amlnf_env_save(unsigned char *buf,int len)
 {
+	return 0;
 	unsigned char *env_buf = NULL;
 	struct nand_flash *flash = &aml_chip_env->flash;
 	int ret=0;
