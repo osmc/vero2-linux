@@ -336,8 +336,8 @@ void root_func(){
 		port_name = "uart_ao";
 		status = "okay";
 		dev_name = "uart_ao";
-	//	pinctrl-names = "default";
-	//	pinctrl-0 = <&ao_uart_pins>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&ao_uart_pins>;
 	};
 	
 //$$ DEVICE="uart_0"
@@ -1548,10 +1548,10 @@ void root_func(){
 //$$ MATCH "uart_ao_pin_match" = "&ao_uart_pins"
 //$$ L2 PROP_U32 2 = "amlogic,setmask"
 //$$ L2 PROP_STR 2 = "amlogic,pins"
- //       ao_uart_pins:ao_uart{
-//			amlogic,setmask=<10 0x1800>;
-//			amlogic,pins="GPIOAO_0", "GPIOAO_1";
-//		};
+       ao_uart_pins:ao_uart{
+			amlogic,setmask=<10 0x1800>;
+			amlogic,pins="GPIOAO_0", "GPIOAO_1";
+		};
 		
 //$$ MATCH "uart_0_pin_match" = "&a_uart_pins"
 //$$ L2 PROP_U32 2 = "amlogic,setmask"
