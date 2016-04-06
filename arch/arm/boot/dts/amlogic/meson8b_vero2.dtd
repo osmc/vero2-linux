@@ -2080,4 +2080,13 @@ void root_func(){
 	};
 */
 
+        meson-ir {
+                compatible = "amlogic,meson6-ir";
+                reg = <0xc8100580 0x20>;
+                interrupts = <0 15 1>;
+                pinctrl-names = "default";
+                pinctrl-0 = <&remote_pins>;
+                status = "ok";
+        };
+
 }; /* end of / */
