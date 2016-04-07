@@ -2072,6 +2072,7 @@ void root_func(){
                 interrupts = <0 15 1>;
                 pinctrl-names = "default";
                 pinctrl-0 = <&remote_pins>;
+		pulse-inverted;
                 status = "ok";
         };
 
