@@ -45,8 +45,6 @@ void meson_common_restart(char mode,const char *cmd)
     if (cmd) {
         if (strcmp(cmd, "charging_reboot") == 0)
             reboot_reason = MESON_CHARGING_REBOOT;
-        else if (strcmp(cmd, "recovery") == 0 || strcmp(cmd, "factory_reset") == 0)
-            reboot_reason = MESON_FACTORY_RESET_REBOOT;
         else if (strcmp(cmd, "update") == 0)
             reboot_reason = MESON_UPDATE_REBOOT;
         else if (strcmp(cmd, "report_crash") == 0)
@@ -63,6 +61,8 @@ void meson_common_restart(char mode,const char *cmd)
             reboot_reason = MESON_USB_BURNER_REBOOT;
         else if (strcmp(cmd, "uboot_suspend") == 0)
             reboot_reason = MESON_UBOOT_SUSPEND;
+        else if (strcmp(cmd, "androidv2") == 0)
+           reboot_reason  = MESON_REBOOT_ANDROIDV2;
 	}
     aml_write_reg32(P_AO_RTI_STATUS_REG1, reboot_reason);
     printk("reboot_reason(0x%x) = 0x%x\n", P_AO_RTI_STATUS_REG1, aml_read_reg32(P_AO_RTI_STATUS_REG1));
