@@ -867,7 +867,7 @@ void root_func(){
 //$$ L2 PROP_U32 = "port-dma"
 //$$ L2 PROP_U32 = "port-id-mode"
 //$$ L2 PROP_STR = "status"
-		usb_b{
+		usb_1{
 			lm-compatible = "amlogic,usb";
 			lm-periph-id = <1>; /** lm name */
 			clock-src = "usb1"; /** clock src */
@@ -892,7 +892,7 @@ void root_func(){
 //$$ L2 PROP_STR = "gpio-vbus-power"
 //$$ L2 PROP_U32 = "gpio-work-mask"
 //$$ L2 PROP_STR = "status"
-		usb_a{
+		usb_0{
 			lm-compatible = "amlogic,usb";
 			lm-periph-id = <0>; /** lm name */
 			clock-src = "usb0"; /** clock src */

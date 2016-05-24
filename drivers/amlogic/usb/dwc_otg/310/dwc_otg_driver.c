@@ -73,6 +73,8 @@
 #define DWC_DRIVER_VERSION	"3.10a 12-MAY-2014"
 #define DWC_DRIVER_DESC		"HS OTG USB Controller driver"
 
+#define VERO2_FS_REM_QUIRK
+
 static const char dwc_driver_name[] = "dwc_otg";
 
 static struct aml_usb_platform usb_platform_data = {
@@ -1303,6 +1305,11 @@ static int dwc_otg_driver_probe(
 		printk("Working on port type = OTG\n");
 		printk("Current port type: %s\n",
 			dwc_otg_is_host_mode(dwc_otg_device->core_if)?"HOST":"SLAVE");
+		#ifdef VERO2_FS_REM_QUIRK
+			printk("Adjusting port speed to Full Speed for Remote Controller");
+			dwc_otg_set_param_speed(dwc_otg_device->core_if, USB_SPEED_FULL);
+			dwc_otg_module_params.speed = USB_SPEED_FULL;
+		#endif
 
 		retval = hcd_init(_dev);
 		if (retval != 0) {
