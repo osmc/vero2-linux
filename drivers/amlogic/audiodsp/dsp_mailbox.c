@@ -54,7 +54,7 @@ int dsp_mailbox_send(struct audiodsp_priv *priv,int overwrite,int num,int cmd,co
 
 	m=&priv->mailbox_reg2[num];
 
-	local_irq_save(flags);
+	local_irq_save_nort(flags);
 	if(overwrite || m->status==0)
 	{
 
@@ -72,7 +72,7 @@ int dsp_mailbox_send(struct audiodsp_priv *priv,int overwrite,int num,int cmd,co
 		DSP_TRIGGER_IRQ(num);
 		res=0;
 	}
-	local_irq_restore(flags);
+	local_irq_restore_nort(flags);
 	return res;
 }
 
@@ -84,7 +84,7 @@ int get_mailbox_data(struct audiodsp_priv *priv,int num,struct mail_msg *msg)
 	struct mail_msg *m;
 	if(num>31 || num <0)
 			return -1;
-	local_irq_save(flags);
+	local_irq_save_nort(flags);
 	m=&priv->mailbox_reg[num];
 	pre_read_mailbox(m);
     //dsp_addr_map = dma_map_single(priv->dev,(void*)m,sizeof(*m),DMA_FROM_DEVICE);
@@ -100,7 +100,7 @@ int get_mailbox_data(struct audiodsp_priv *priv,int num,struct mail_msg *msg)
 	}
 	m->status=0;
 	after_change_mailbox(m);
-	local_irq_restore(flags);
+	local_irq_restore_nort(flags);
 	return 0;
 }
 

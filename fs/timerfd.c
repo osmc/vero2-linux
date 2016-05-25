@@ -380,7 +380,7 @@ static int do_timerfd_settime(int ufd, int flags,
 				break;
 		}
 		spin_unlock_irq(&ctx->wqh.lock);
-		hrtimer_wait_for_timer(&ctx->tmr);
+		hrtimer_wait_for_timer(&ctx->t.tmr);
 	}
 
 	/*

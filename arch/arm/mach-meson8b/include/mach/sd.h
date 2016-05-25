@@ -182,7 +182,8 @@ struct amlsd_host {
 
 	struct  mmc_request	*mrq;
 	struct  mmc_request	*mrq2;
-	spinlock_t	mrq_lock;
+	spinlock_t		mrq_lock;
+	raw_spinlock_t		raw_mrq_lock;
 	int			cmd_is_stop;
 	enum aml_mmc_waitfor	xfer_step;
 	enum aml_mmc_waitfor	xfer_step_prev;

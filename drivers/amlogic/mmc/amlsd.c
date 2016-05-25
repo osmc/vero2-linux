@@ -296,9 +296,9 @@ static void aml_sg_miter_stop(struct sg_mapping_iter *miter)
 
 		if (PageHighMem(miter->page)) {
 			printk(KERN_DEBUG "AML_SDHC miter_stop highmem\n");
-			local_irq_save(flags);
+			local_irq_save_nort(flags);
 			kunmap_atomic(miter->addr);
-			local_irq_restore(flags);
+			local_irq_restore_nort(flags);
 		}
 
 		miter->page = NULL;
@@ -343,9 +343,9 @@ static bool aml_sg_miter_next(struct sg_mapping_iter *miter)
 
     if (PageHighMem(miter->page)){
 		printk(KERN_DEBUG "AML_SDHC miter_next highmem\n");
-		local_irq_save(flags);
+		local_irq_save_nort(flags);
 	miter->addr = kmap_atomic(miter->page) + miter->__offset;
-		local_irq_restore(flags);
+		local_irq_restore_nort(flags);
     }
 	else
 		miter->addr = page_address(miter->page) + miter->__offset;

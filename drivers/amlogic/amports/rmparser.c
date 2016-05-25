@@ -47,6 +47,8 @@ static u32 parse_halt;
 static DECLARE_WAIT_QUEUE_HEAD(rm_wq);
 const static char rmparser_id[] = "rmparser-id";
 
+static DEFINE_SPINLOCK(rmparser_audio_reset_lock);
+
 extern void vreal_set_fatal_flag(int flag);
 
 static irqreturn_t rm_parser_isr(int irq, void *dev_id)
@@ -288,9 +290,8 @@ void rm_set_vasid(u32 vid, u32 aid)
 void rm_audio_reset(void)
 {
     ulong flags;
-	DEFINE_SPINLOCK(lock);
-
-    spin_lock_irqsave(&lock, flags);
+	
+    spin_lock_irqsave(&rmparser_audio_reset_lock, flags);
 
     WRITE_MPEG_REG(PARSER_AUDIO_WP,
                    READ_MPEG_REG(AIU_MEM_AIFIFO_START_PTR));
@@ -306,7 +307,7 @@ void rm_audio_reset(void)
     WRITE_MPEG_REG(AIU_MEM_AIFIFO_BUF_CNTL, MEM_BUFCTRL_INIT);
     CLEAR_MPEG_REG_MASK(AIU_MEM_AIFIFO_BUF_CNTL, MEM_BUFCTRL_INIT);
 
-    spin_unlock_irqrestore(&lock, flags);
+    spin_unlock_irqrestore(&rmparser_audio_reset_lock, flags);
 
     return;
 }

@@ -158,7 +158,7 @@ error1:
 	unsigned long flags;
 	struct audiodsp_microcode *pmcode;
 	struct list_head  *list,*head;
-	local_irq_save(flags);
+	local_irq_save_nort(flags);
 	head=&priv->mcode_list;
 	while(!list_empty(head))
 		{
@@ -167,6 +167,6 @@ error1:
 		list_del(list);
 		kfree(pmcode);
 		}
-	local_irq_restore(flags);
+	local_irq_restore_nort(flags);
 	return 0;
   }

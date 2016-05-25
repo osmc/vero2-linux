@@ -72,6 +72,9 @@ static u32 audio_data_parsed;
 static atomic_t esparser_use_count = ATOMIC_INIT(0);
 static DEFINE_MUTEX(esparser_mutex);
 
+static DEFINE_SPINLOCK(esparser_audio_reset_lock);
+static DEFINE_SPINLOCK(esparser_sub_reset_lock);
+
 static void parser_tasklet(ulong data)
 {
     u32 int_status = READ_MPEG_REG(PARSER_INT_STATUS);
@@ -432,9 +435,8 @@ Err_1:
 void esparser_audio_reset(struct stream_buf_s *buf)
 {
     ulong flags;
-	DEFINE_SPINLOCK(lock);
 
-    spin_lock_irqsave(&lock, flags);
+    spin_lock_irqsave(&esparser_audio_reset_lock, flags);
 
     WRITE_MPEG_REG(PARSER_AUDIO_WP,
                    READ_MPEG_REG(AIU_MEM_AIFIFO_START_PTR));
@@ -453,7 +455,7 @@ void esparser_audio_reset(struct stream_buf_s *buf)
     buf->flag |= BUF_FLAG_PARSER;
 
     audio_data_parsed = 0;
-    spin_unlock_irqrestore(&lock, flags);
+    spin_unlock_irqrestore(&esparser_audio_reset_lock, flags);
 
     return;
 }
@@ -638,11 +640,10 @@ ssize_t esparser_write(struct file *file,
 void esparser_sub_reset(void)
 {
     ulong flags;
-	DEFINE_SPINLOCK(lock);
     u32 parser_sub_start_ptr;
     u32 parser_sub_end_ptr;
 
-    spin_lock_irqsave(&lock, flags);
+    spin_lock_irqsave(&esparser_audio_reset_lock, flags);
 
     parser_sub_start_ptr = READ_MPEG_REG(PARSER_SUB_START_PTR);
     parser_sub_end_ptr = READ_MPEG_REG(PARSER_SUB_END_PTR);
@@ -653,7 +654,7 @@ void esparser_sub_reset(void)
     WRITE_MPEG_REG(PARSER_SUB_WP, parser_sub_start_ptr);
     SET_MPEG_REG_MASK(PARSER_ES_CONTROL, (7 << ES_SUB_WR_ENDIAN_BIT) | ES_SUB_MAN_RD_PTR);
 
-    spin_unlock_irqrestore(&lock, flags);
+    spin_unlock_irqrestore(&esparser_audio_reset_lock, flags);
 
     return;
 }

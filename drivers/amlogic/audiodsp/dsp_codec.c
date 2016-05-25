@@ -36,7 +36,7 @@ int dsp_codec_get_bufer_data_len(struct audiodsp_priv *priv)
 #define REVERSD_BYTES   32
 #define CACHE_ALIGNED(x)    (x&(~0x1f))
     unsigned long rp, wp, len, flags;
-    local_irq_save(flags);
+    local_irq_save_nort(flags);
     rp = dsp_codec_get_rd_addr(priv);
     wp = dsp_codec_get_wd_addr(priv);
     if (rp > wp) {
@@ -46,7 +46,7 @@ int dsp_codec_get_bufer_data_len(struct audiodsp_priv *priv)
     }
     len = (len > REVERSD_BYTES) ? (len - REVERSD_BYTES) : 0;
     len = CACHE_ALIGNED(len);
-    local_irq_restore(flags);
+    local_irq_restore_nort(flags);
     return len;
 }
 
@@ -58,7 +58,7 @@ int dsp_codec_get_bufer_data_len1(struct audiodsp_priv *priv, unsigned long wd_p
     unsigned long rp, wp, len, flags;
     //if(wd_ptr != DSP_RD(DSP_DECODE_OUT_WD_ADDR))
     //  printk("w1 == %x , w2 == %x, r == %x\n", DSP_RD(DSP_DECODE_OUT_WD_ADDR), wd_ptr, DSP_RD(DSP_DECODE_OUT_RD_ADDR));
-    local_irq_save(flags);
+    local_irq_save_nort(flags);
     rp = dsp_codec_get_rd_addr(priv);
     wp = ARC_2_ARM_ADDR_SWAP(wd_ptr);
     if (rp > wp) {
@@ -68,21 +68,21 @@ int dsp_codec_get_bufer_data_len1(struct audiodsp_priv *priv, unsigned long wd_p
     }
     len = (len > REVERSD_BYTES) ? (len - REVERSD_BYTES) : 0;
     len = CACHE_ALIGNED(len);
-    local_irq_restore(flags);
+    local_irq_restore_nort(flags);
     return len;
 }
 
 unsigned long dsp_codec_inc_rd_addr(struct audiodsp_priv *priv, int size)
 {
     unsigned long rd, flags;
-    local_irq_save(flags);
+    local_irq_save_nort(flags);
     rd = dsp_codec_get_rd_addr(priv);
     rd = rd + size;
     if (rd >= priv->stream_buffer_end) {
         rd = rd - priv->stream_buffer_size;
     }
     DSP_WD(DSP_DECODE_OUT_RD_ADDR, ARM_2_ARC_ADDR_SWAP((void*)rd));
-    local_irq_restore(flags);
+    local_irq_restore_nort(flags);
     return rd;
 }
 

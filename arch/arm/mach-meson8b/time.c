@@ -360,14 +360,14 @@ static struct meson_clock *clockevent_to_clock(struct clock_event_device *evt)
 	return (struct meson_clock*)evt->private;
 }
 
-static DEFINE_SPINLOCK(time_lock);
+static DEFINE_RAW_SPINLOCK(time_lock);
 
 static void meson_clkevt_set_mode(enum clock_event_mode mode,
                                   struct clock_event_device *dev)
 {
 	struct meson_clock * clk=clockevent_to_clock(dev);
 
-	spin_lock(&time_lock);
+	raw_spin_lock(&time_lock);
 	switch (mode) {
 		case CLOCK_EVT_MODE_RESUME:
 			printk(KERN_INFO"Resume timer%s\n", clk->name);
@@ -391,7 +391,7 @@ static void meson_clkevt_set_mode(enum clock_event_mode mode,
 			aml_set_reg32_bits(clk->mux_reg, 0, clk->bit_enable, 1);
 		break;
 	}
-	spin_unlock(&time_lock);
+	raw_spin_unlock(&time_lock);
 }
 static int meson_set_next_event(unsigned long evt,
                                 struct clock_event_device *dev)
