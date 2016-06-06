@@ -764,18 +764,23 @@ void root_func(){
 //$$ L2 PROP_U32 16*3 = "dvfs_table"
         vcck_dvfs {
             dvfs_id     = <1>;                                  /** must be value of (1 << n)            */
-            table_count = <8>;                                 /** must be correct count for dvfs_table */
+            table_count = <13>;                                 /** must be correct count for dvfs_table */
             dvfs_table  = <
             /* NOTE: frequent in this table must be ascending order */
             /* frequent(Khz)    min_uV      max_uV                  */
+                  96000         860000      860000
+                 192000         860000      860000
+                 312000         860000      860000
+                 408000         860000      860000
+                 504000         860000      860000
                  600000         860000      860000
                  720000         860000      860000
                  816000         900000      900000
                 1008000         920000      920000
                 1200000         970000      970000
                 1320000        1100000     1100000
-		1488000	       1110000	   1110000
-		1536000	       1140000	   1140000
+                1488000        1100000     1100000
+                1536000        1140000     1140000
             >;
         };
     };
@@ -1319,11 +1324,11 @@ void root_func(){
 		#thermal-cells=<7>;
 		dev_name = "aml_thermal";
         trip_point=<60 1536001 1536001 511 511 3 2
-		    65 1448001 1448001 426 426 3 2
+		    65 1488001 1488001 426 426 3 2
 		    70 1320001 1320001 328 328 2 2
 		    75 1200001 1200001 328 328 2 1
-		    80 1000009 1000009 328 328 2 1
-		    90 8170001 8000001 251 251 1 1	
+		    80 1000001 1000001 328 328 2 1
+		    90 816001  816001 251 251 1 1	
                     260 0xffffffff 0xffffffff 0xffffffff 0xffffffff 0xffffffff 0xffffffff>;
 		cpu_cali_a=<0>;
 		idle_interval=<1000>;
