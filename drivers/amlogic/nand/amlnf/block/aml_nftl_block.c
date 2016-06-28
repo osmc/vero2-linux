@@ -672,7 +672,6 @@ static void aml_nftl_add_ntd(struct ntd_blktrans_ops *tr, struct ntd_info *ntd)
 *****************************************************************************/
 static int aml_nftl_open(struct ntd_blktrans_dev *nbd)
 {
-    aml_nftl_dbg("aml_nftl_open ok!\n");
     return 0;
 }
 
