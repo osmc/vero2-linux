@@ -355,7 +355,6 @@ int run_arc_program(void)
 
 		udelay(20);
 		if (aml_read_reg32(P_AO_RTI_STATUS_REG1) == 0xeeeeaaaa) {
-			printk("AO cpu runs ok.\n");
 			return 0;
 		}
 		else {
@@ -373,7 +372,6 @@ int stop_ao_cpu(void)
 	aml_write_reg32(P_AO_RTI_STATUS_REG1, 0xddddeeee); //ask ao to halt.
 		udelay(40);
 	if(aml_read_reg32(P_AO_RTI_STATUS_REG1) == 0x0){
-		printk("AO cpu stop ok.\n");
 		return 0;
 	}
 	else{
