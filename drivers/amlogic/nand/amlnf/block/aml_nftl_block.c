@@ -350,8 +350,8 @@ static int do_nftltrans_request(struct ntd_blktrans_ops *tr,struct ntd_blktrans_
             break;
 
         case WRITE:
-		write_sync_flag(nftl_blk);
             bio_flush_dcache_pages(nftl_blk->req->bio);
+	    nftl_blk->nftl_dev->sync_flag = 0;
             for(i=0; i<(segments+1); i++) {
                 blk_addr = (block + (offset_addr[i] >> tr->blkshift));
                 blk_cnt = ((offset_addr[i+1] - offset_addr[i]) >> tr->blkshift);
@@ -362,6 +362,10 @@ static int do_nftltrans_request(struct ntd_blktrans_ops *tr,struct ntd_blktrans_
                     break;
                 }
             }
+	    write_sync_flag(nftl_blk);
+            if (nftl_blk->req->cmd_flags & REQ_SYNC)
+		nftl_blk->flush_write_cache(nftl_blk);
+
             break;
 
         default:
