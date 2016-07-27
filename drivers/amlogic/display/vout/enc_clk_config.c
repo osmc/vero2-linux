@@ -223,6 +223,17 @@ static void set_hpll_clk_out(unsigned clk)
             aml_write_reg32(P_HHI_VID_PLL_CNTL,  0x400c0436);
             aml_write_reg32(P_HHI_VID_PLL_CNTL5, 0x00016385);
             break;
+	case 1400:
+            aml_write_reg32(P_HHI_VID_PLL_CNTL2, 0x69c8c000);
+            aml_write_reg32(P_HHI_VID_PLL_CNTL4, 0x4023d100);
+            aml_write_reg32(P_HHI_VID_PLL_CNTL3, 0x8a7ad023);
+            aml_write_reg32(P_HHI_VID_PLL_CNTL5, 0x12286);
+            aml_write_reg32(P_HHI_VID_PLL_CNTL,  0x6000043b);
+            aml_write_reg32(P_HHI_VID_PLL_CNTL,  0x4000043b);
+            WAIT_FOR_PLL_LOCKED(P_HHI_VID_PLL_CNTL);
+            aml_write_reg32(P_HHI_VID_PLL_CNTL2, 0x69c8c40f);
+            break;
+
         default:
             printk("error hpll clk: %d\n", clk);
             break;
@@ -536,6 +547,8 @@ static enc_clk_val_t setting_enc_clk_val[] = {
     {VMODE_SVGA,       1058, 2, 1, 1, VIU_ENCP, 10, 1, 2, 1, -1, -1, -1,  1,   1},
     {VMODE_XGA,        1085, 1, 1, 1, VIU_ENCP,  5, 1, 1, 1, -1, -1, -1,  1,   1},
     {VMODE_SXGA,       1080, 1, 1, 1, VIU_ENCP, 10, 1, 1, 1, -1, -1, -1,  1,  -1},
+    {VMODE_800P,       1400, 2, 2, 1, VIU_ENCP, 10, 1, 1, 1, -1, -1, -1,  1,  -1},
+    {VMODE_1200P,      2970, 2, 2, 1, VIU_ENCP, 10, 1, 1, 1, -1, -1, -1,  1,  -1},
 #endif
 
 #if MESON_CPU_TYPE == MESON_CPU_TYPE_MESON8

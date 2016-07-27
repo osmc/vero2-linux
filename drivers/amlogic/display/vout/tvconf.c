@@ -122,6 +122,8 @@ static struct vmode_tvmode_tab_t mode_tab[] = {
     {TVMODE_SXGA, VMODE_SXGA},
     {TVMODE_WSXGA, VMODE_WSXGA},
     {TVMODE_FHDVGA, VMODE_FHDVGA},
+    {TVMODE_800P, VMODE_800P},
+    {TVMODE_1200P, VMODE_1200P},
 #ifdef CONFIG_AML_VOUT_FRAMERATE_AUTOMATION
     {TVMODE_480P_59HZ, VMODE_480P_59HZ},
     {TVMODE_720P_59HZ, VMODE_720P_59HZ}, // for 720p 59.94hz
@@ -732,6 +734,34 @@ static const vinfo_t tv_info[] =
         .sync_duration_den = 1,
         .video_clk         = 148500000,
     },
+
+    { /* VMODE_800P */
+               .name                           = "800p",
+               .mode                           = VMODE_800P,
+               .width                          = 1280,
+               .height                         = 800,
+               .field_height           = 800,
+               .aspect_ratio_num       = 16,
+               .aspect_ratio_den       = 9,
+               .sync_duration_num      = 60,
+               .sync_duration_den      = 1,
+               .video_clk                      = 71000000,
+       },
+
+    { /* VMODE_1200P */
+               .name                           = "1200p",
+               .mode                           = VMODE_1200P,
+               .width                          = 1920,
+               .height                         = 1200,
+               .field_height           = 1200,
+               .aspect_ratio_num       = 16,
+               .aspect_ratio_den       = 9,
+               .sync_duration_num      = 60,
+               .sync_duration_den      = 1,
+               .video_clk                      = 74250000,
+       },
+
+
 };
 
 static const struct file_operations am_tv_fops = {

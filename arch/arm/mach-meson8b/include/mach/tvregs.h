@@ -1451,6 +1451,58 @@ static const reg_t tvregs_xga_1024x768[] = {
 
 };
 
+static const  reg_t tvregs_800p[] = {
+    {P_VENC_VDAC_SETTING,          0xff,  },
+
+    {P_ENCP_VIDEO_EN,              0,     },
+    {P_ENCI_VIDEO_EN,              0,     },
+
+    {P_ENCP_VIDEO_MODE, 0x4040,},
+    {P_ENCP_VIDEO_MODE_ADV, 0x18,},
+    {P_ENCP_VIDEO_MAX_PXCNT, 0x59F,},
+    {P_ENCP_VIDEO_MAX_LNCNT, 0x336,},
+    {P_ENCP_VIDEO_HAVON_BEGIN, 0x70,},
+    {P_ENCP_VIDEO_HAVON_END, 0x56F,},
+    {P_ENCP_VIDEO_VAVON_BLINE, 0x14,},
+    {P_ENCP_VIDEO_VAVON_ELINE, 0x333,},
+    {P_ENCP_VIDEO_HSO_BEGIN, 0x0,},
+    {P_ENCP_VIDEO_HSO_END, 0x20,},
+    {P_ENCP_VIDEO_VSO_BEGIN, 0x1E,},
+    {P_ENCP_VIDEO_VSO_END, 0x32,},
+    {P_ENCP_VIDEO_VSO_BLINE, 0x0,},
+    {P_ENCP_VIDEO_VSO_ELINE, 0x6,},
+
+    {P_ENCP_VIDEO_EN,              1,     },
+    {P_ENCI_VIDEO_EN,              0,     },
+    {MREG_END_MARKER,            0      }
+};
+
+static const  reg_t tvregs_1200p[] = {
+    {P_VENC_VDAC_SETTING,          0xff,  },
+
+    {P_ENCP_VIDEO_EN,              0,     },
+    {P_ENCI_VIDEO_EN,              0,     },
+
+    {P_ENCP_VIDEO_MODE, 0x4040,},
+    {P_ENCP_VIDEO_MODE_ADV, 0x18,},
+    {P_ENCP_VIDEO_MAX_PXCNT, 0x59F,},
+    {P_ENCP_VIDEO_MAX_LNCNT, 0x336,},
+    {P_ENCP_VIDEO_HAVON_BEGIN, 0x70,},
+    {P_ENCP_VIDEO_HAVON_END, 0x56F,},
+    {P_ENCP_VIDEO_VAVON_BLINE, 0x14,},
+    {P_ENCP_VIDEO_VAVON_ELINE, 0x333,},
+    {P_ENCP_VIDEO_HSO_BEGIN, 0x0,},
+    {P_ENCP_VIDEO_HSO_END, 0x20,},
+    {P_ENCP_VIDEO_VSO_BEGIN, 0x1E,},
+    {P_ENCP_VIDEO_VSO_END, 0x32,},
+    {P_ENCP_VIDEO_VSO_BLINE, 0x0,},
+    {P_ENCP_VIDEO_VSO_ELINE, 0x6,},
+
+    {P_ENCP_VIDEO_EN,              1,     },
+    {P_ENCI_VIDEO_EN,              0,     },
+    {MREG_END_MARKER,            0      }
+};
+
 // Using tvmode as index
 static struct tvregs_set_t tvregsTab[] = {
     {TVMODE_480I, tvregs_480i},
@@ -1477,6 +1529,8 @@ static struct tvregs_set_t tvregsTab[] = {
     {TVMODE_VGA, tvregs_vga_640x480,},
     {TVMODE_SVGA, tvregs_svga_800x600,},
     {TVMODE_XGA, tvregs_xga_1024x768,},
+    {TVMODE_800P, tvregs_800p,},
+    {TVMODE_1200P, tvregs_1200p,},
 #ifdef CONFIG_AML_VOUT_FRAMERATE_AUTOMATION
 	{TVMODE_480P_59HZ, tvregs_480p,},
 	{TVMODE_720P_59HZ , tvregs_720p,},
@@ -1513,6 +1567,8 @@ static const tvinfo_t tvinfoTab[] = {
     {.tvmode = TVMODE_VGA, .xres = 640, .yres = 480, .id = "vga"},
     {.tvmode = TVMODE_SVGA, .xres = 800, .yres = 600, .id = "svga"},
     {.tvmode = TVMODE_XGA, .xres = 1024, .yres = 768, .id = "xga"},
+    {.tvmode = TVMODE_800P, .xres = 1280, .yres = 800, .id = "800p"},
+    {.tvmode = TVMODE_1200P, .xres = 1920, .yres = 1200, .id = "1200p"},
 #ifdef CONFIG_AML_VOUT_FRAMERATE_AUTOMATION
     {.tvmode = TVMODE_480P_59HZ, .xres =  720, .yres =	480, .id = "480p59hz"},
     {.tvmode = TVMODE_720P_59HZ, .xres = 1280, .yres =	720, .id = "720p59hz"},

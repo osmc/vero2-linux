@@ -61,6 +61,8 @@ typedef enum {
     VMODE_1080I_50HZ ,
     VMODE_1080P_50HZ ,
     VMODE_1080P_24HZ ,
+    VMODE_800P,
+    VMODE_1200P,
 #ifdef CONFIG_AML_VOUT_FRAMERATE_AUTOMATION
 	VMODE_1080P_23HZ , // for framerate automation 1080p 23.97hz
 #endif
@@ -167,7 +169,9 @@ typedef enum {
     TVMODE_SXGA,
     TVMODE_WSXGA,
     TVMODE_FHDVGA,
-    TVMODE_MAX    
+    TVMODE_MAX,
+    TVMODE_800P,
+    TVMODE_1200P
 } tvmode_t;
 
 typedef struct {

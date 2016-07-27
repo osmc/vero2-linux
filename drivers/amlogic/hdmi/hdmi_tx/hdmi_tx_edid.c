@@ -1420,6 +1420,8 @@ static dispmode_vic_t dispmode_VIC_tab[]=
 	{"4k2k23hz",  HDMI_4k2k_24},
 #endif
     {"4k2ksmpte", HDMI_4k2k_smpte_24},
+    {"800p", HDMI_800p},
+    {"1200p", HDMI_1200p},
 };
 
 int hdmitx_edid_VIC_support(HDMI_Video_Codes_t vic)

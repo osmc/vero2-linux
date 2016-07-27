@@ -785,6 +785,8 @@ const char* disp_mode_t[]={
     "4k2k25hz",
     "4k2k24hz",
     "4k2ksmpte",
+    "800p",
+    "1200p",
     NULL
 };
 

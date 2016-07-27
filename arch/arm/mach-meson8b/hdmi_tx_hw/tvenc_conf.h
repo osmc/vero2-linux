@@ -194,6 +194,14 @@ static  reg_t hdmi_tvenc_regs_1080p50[] = {
     {0,0}
 };
 
+static reg_t hdmi_tvenc_regs_800p[] = {
+    {0, 0}
+};
+
+static reg_t hdmi_tvenc_regs_1200p[] = {
+    {0, 0}
+};
+
 typedef struct hdmi_tvenc_config_
 {
     int vic;
@@ -221,5 +229,7 @@ static const hdmi_tvenc_config_t hdmi_tvenc_configs[] = {
     {HDMI_1080p24,               hdmi_tvenc_regs_1080p},
     {HDMI_1080p25,               hdmi_tvenc_regs_1080p},
     {HDMI_1080p30,               hdmi_tvenc_regs_1080p},
+    {HDMI_800p,			 hdmi_tvenc_regs_800p},
+    {HDMI_1200p,		 hdmi_tvenc_regs_1200p},
     {HDMI_Unkown,               NULL},
 };
