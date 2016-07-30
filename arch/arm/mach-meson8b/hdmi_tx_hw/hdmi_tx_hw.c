@@ -769,11 +769,11 @@ static void hdmi_tvenc_set(Hdmi_tx_video_para_t *param)
          PIXEL_REPEAT_HDMI    = 0;
          ACTIVE_PIXELS        = 1920;
          ACTIVE_LINES         = 1200;
-         LINES_F0             = 1245;
-         LINES_F1             = 1245;
+         LINES_F0             = 1235;
+         LINES_F1             = 1235;
          FRONT_PORCH          = 136;
          HSYNC_PIXELS         = 32;
-         BACK_PORCH           = 336;
+         BACK_PORCH           = 80;
          EOF_LINES            = 3;
          VSYNC_LINES          = 6;
          SOF_LINES            = 26;
@@ -2175,7 +2175,7 @@ static Vic_attr_map vic_attr_map_table[] = {
     {HDMI_4k2k_30,          297000},
     {HDMI_4k2k_smpte_24,    297000},
     {HDMI_800p,		    71000}	   ,
-    {HDMI_1200p,	    74250}	   ,
+    {HDMI_1200p,	    154000}	   ,
 };
 
 static unsigned int vic_map_clk(HDMI_Video_Codes_t vic)

@@ -758,7 +758,7 @@ static const vinfo_t tv_info[] =
                .aspect_ratio_den       = 9,
                .sync_duration_num      = 60,
                .sync_duration_den      = 1,
-               .video_clk                      = 74250000,
+               .video_clk                      = 154000000,
        },
 
 
