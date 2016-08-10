@@ -183,11 +183,11 @@ static int aml_wtd_pm_notify(struct notifier_block *nb, unsigned long event,
 static int aml_wtd_reboot_notify(struct notifier_block *nb, unsigned long event,
 	void *dummy)
 {
-	if (event == SYS_POWER_OFF) {
+	/*if (event == SYS_POWER_OFF) {
 		printk("set watch dog shut down timeout %d seconds\n",awdtv->suspend_timeout);
 		enable_watchdog(awdtv->shutdown_timeout*awdtv->one_second);
 		aml_write_reg32(P_AO_RTI_STATUS_REG1, MESON_CHARGING_REBOOT);
-	}
+	}*/
 	return NOTIFY_OK;
 }
 
