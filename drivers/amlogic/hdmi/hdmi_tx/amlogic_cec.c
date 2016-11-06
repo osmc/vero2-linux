@@ -46,7 +46,7 @@ MODULE_DESCRIPTION("Amlogic CEC driver");
 MODULE_LICENSE("GPL");
 
 //unused, only left to satisfy the linker
-bool cec_msg_dbg_en = 1;
+bool cec_msg_dbg_en = 0;
 
 #define DRV_NAME "amlogic_cec"
 #ifndef amlogic_cec_log_dbg
