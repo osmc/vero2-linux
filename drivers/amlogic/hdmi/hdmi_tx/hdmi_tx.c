@@ -644,6 +644,55 @@ static ssize_t show_edid(struct device *dev, struct device_attribute *attr, char
     return hdmitx_edid_dump(&hdmitx_device, buf, PAGE_SIZE);
 }
 
+static ssize_t store_3d_mode(struct device *dev, struct device_attribute *attr, const char * buf, size_t count)
+{
+    /* Deactivate TMDS clock */
+    hdmitx_device.HWOp.CntlMisc(&hdmitx_device, MISC_TMDS_PHY_OP, TMDS_PHY_DISABLE);
+    /* Clear vendor and infoframe */
+    hdmitx_device.HWOp.CntlConfig(&hdmitx_device, CONF_CLR_AVI_PACKET, 0);
+    hdmitx_device.HWOp.CntlConfig(&hdmitx_device, CONF_CLR_VSDB_PACKET, 0);
+    /* Set up vendor packet */
+    unsigned char VEN_HB[3];
+    VEN_HB[0] = 0x81;
+    VEN_HB[1] = 0x01;
+    VEN_HB[2] = 0x6;
+    /* Identify 3D mode */
+    int type_3d = 0;
+    if (strncmp(buf, "6", 1) == 0) {
+        hdmi_print(IMP, VID, "3d: switching to topbottom\n");
+        type_3d = 6;
+    }
+    if (strncmp(buf, "8", 1) == 0) {
+        hdmi_print(IMP, VID, "3d: switching to leftright\n");
+	type_3d = 8;
+    }
+    if (strncmp(buf, "f", 1) == 0) {
+        hdmi_print(IMP, VID, "3d: turning off\n");
+        hdmitx_device.HWOp.SetPacket(HDMI_PACKET_VEND, NULL, VEN_HB);
+        return 0;
+    }
+    /* Set up 3D mode appropriately in InfoFrame.
+       HDMI Vendor Specific InfoFrame info on Page 6:
+       https://etmriwi.home.xs4all.nl/forum/hdmi_spec1.4a_3dextraction.pdf */
+
+    unsigned char VEN_DB[6];
+    int i;
+    for (i = 0; i < 0x6; i++) {
+        VEN_DB[i] = 0; /* Pad to start or the length is less than stellar */
+    }
+    VEN_DB[0]=0x03;
+    VEN_DB[1]=0x0c;
+    VEN_DB[2]=0x00;
+    VEN_DB[3]=0x40;
+    VEN_DB[4]=type_3d<<4;
+    hdmitx_device.HWOp.SetPacket(HDMI_PACKET_VEND, VEN_DB, VEN_HB);
+
+    /* Wait before re-activating the clock */
+    msleep(100);
+    hdmitx_device.HWOp.CntlMisc(&hdmitx_device, MISC_TMDS_PHY_OP, TMDS_PHY_ENABLE);
+    return 0;
+}
+
 static ssize_t store_edid(struct device * dev, struct device_attribute *attr, const char * buf, size_t count)
 {
     if(buf[0]=='h'){
@@ -968,6 +1017,7 @@ void hdmi_print(int dbg_lvl, const char *fmt, ...)
 
 static DEVICE_ATTR(disp_mode, S_IWUSR | S_IRUGO | S_IWGRP, show_disp_mode, store_disp_mode);
 static DEVICE_ATTR(aud_mode, S_IWUSR | S_IRUGO, show_aud_mode, store_aud_mode);
+static DEVICE_ATTR(3d_switch_mode, S_IWUSR, NULL, store_3d_mode);
 static DEVICE_ATTR(edid, S_IWUSR | S_IRUGO, show_edid, store_edid);
 static DEVICE_ATTR(config, S_IWUSR | S_IRUGO | S_IWGRP, show_config, store_config);
 static DEVICE_ATTR(debug, S_IWUSR | S_IRUGO, NULL, store_debug);
