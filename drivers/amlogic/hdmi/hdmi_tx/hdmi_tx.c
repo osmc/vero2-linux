@@ -1319,7 +1319,7 @@ wait:
             hdmitx_device->HWOp.CntlDDC(hdmitx_device, DDC_PIN_MUX_OP, PIN_MUX);
             hdmitx_device->HWOp.CntlDDC(hdmitx_device, DDC_RESET_EDID, 0);
             hdmitx_device->HWOp.CntlDDC(hdmitx_device, DDC_EDID_READ_DATA, 0);      // start reading edid frist time
-            msleep(200);    // wait 200ms to read edid
+            msleep(600);    // wait 600ms to read edid
 
             if(!(hdmitx_device->HWOp.CntlDDC(hdmitx_device, DDC_IS_EDID_DATA_READY, 0))) {   // hardware i2c read fail
                 hdmi_print(ERR, EDID "edid failed\n");
