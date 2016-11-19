@@ -542,6 +542,26 @@ static ssize_t store_disp_mode(struct device * dev, struct device_attribute *att
     return 16;
 }
 
+/*hpdlock attr */
+
+static ssize_t show_hpd_lock(struct device * dev, struct device_attribute *attr, char * buf)
+{
+    return hdmitx_device.hpd_lock;
+}
+
+static ssize_t store_hpd_lock(struct device * dev, struct device_attribute *attr, const char * buf, size_t count)
+{
+    if (buf) {
+        hdmitx_device.hpd_lock = 1;
+        hpdmode = 0;
+    }
+    else
+    {
+        hdmitx_device.hpd_lock = 0;
+        hpdmode = 1;
+    }
+}
+
 #ifndef CONFIG_AML_HDMI_TX_NEW_CEC_DRIVER
 /*cec attr*/
 static ssize_t show_cec(struct device * dev, struct device_attribute *attr, char * buf)
@@ -1028,6 +1048,7 @@ static DEVICE_ATTR(disp_cap_3d, S_IWUSR | S_IRUGO, show_disp_cap_3d, NULL);
 static DEVICE_ATTR(hdcp_ksv_info, S_IWUSR | S_IRUGO, show_hdcp_ksv_info, NULL);
 static DEVICE_ATTR(hpd_state, S_IWUSR | S_IRUGO, show_hpd_state, NULL);
 static DEVICE_ATTR(support_3d, S_IWUSR | S_IRUGO, show_support_3d, NULL);
+static DEVICE_ATTR(hpdlock, S_IWUSR | S_IRUGO | S_IWGRP, show_hpd_lock, store_hpd_lock);
 #ifndef CONFIG_AML_HDMI_TX_NEW_CEC_DRIVER
 static DEVICE_ATTR(cec, S_IWUSR | S_IRUGO, show_cec, store_cec);
 static DEVICE_ATTR(cec_config, S_IWUSR | S_IRUGO | S_IWGRP, show_cec_config, store_cec_config);
