@@ -1037,7 +1037,7 @@ void hdmi_print(int dbg_lvl, const char *fmt, ...)
 
 static DEVICE_ATTR(disp_mode, S_IWUSR | S_IRUGO | S_IWGRP, show_disp_mode, store_disp_mode);
 static DEVICE_ATTR(aud_mode, S_IWUSR | S_IRUGO, show_aud_mode, store_aud_mode);
-static DEVICE_ATTR(3d_switch_mode, S_IWUSR, NULL, store_3d_mode);
+static DEVICE_ATTR(3d_switch_mode, S_IWUSR | S_IRUGO | S_IWGRP, NULL, store_3d_mode);
 static DEVICE_ATTR(edid, S_IWUSR | S_IRUGO, show_edid, store_edid);
 static DEVICE_ATTR(config, S_IWUSR | S_IRUGO | S_IWGRP, show_config, store_config);
 static DEVICE_ATTR(debug, S_IWUSR | S_IRUGO, NULL, store_debug);
