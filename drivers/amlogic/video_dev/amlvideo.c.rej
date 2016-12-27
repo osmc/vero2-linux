@@ -1,0 +1,9 @@
+diff a/drivers/amlogic/video_dev/amlvideo.c b/drivers/amlogic/video_dev/amlvideo.c	(rejected hunks)
+@@ -319,6 +321,7 @@ static int video_receiver_event_fun(int type, void* data, void* private_data) {
+             vf_reg_provider(&amlvideo_vf_prov);
+             vf_notify_receiver(PROVIDER_NAME,VFRAME_EVENT_PROVIDER_START,NULL);
+             vfq_init(&q_ready, AMLVIDEO_POOL_SIZE+1, &amlvideo_pool_ready[0]);
++            vfq_init(&q_omx, AMLVIDEO_POOL_SIZE+1, &amlvideo_pool_omx[0]);
+         }
+     }
+     return 0;
