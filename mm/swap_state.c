@@ -117,30 +117,9 @@ int __add_to_swap_cache(struct page *page, swp_entry_t entry)
 	return error;
 }
 
-#define COMPRESS_PREV_USE 1
 int add_to_swap_cache(struct page *page, swp_entry_t entry, gfp_t gfp_mask)
 {
 	int error;
-#if COMPRESS_PREV_USE
-	unsigned long cmpr_len = 0;
-	struct block_device *bdev = NULL;
-	struct swap_info_struct *sis = NULL;
-	sis = swap_info_get(entry);
-	if (sis) {
-		if (sis->flags & SWP_BLKDEV) {
-			struct gendisk *disk = sis->bdev->bd_disk;
-			spin_unlock(&sis->lock);
-			if (disk && disk->fops->ioctl){
-				disk->fops->ioctl(bdev, 80, (unsigned)page,
-								 (unsigned long)&cmpr_len);
-				cmpr_len += cmpr_len >> 1;
-				if(cmpr_len > PAGE_SIZE){
-					return -EINVAL;
-				}
-			}
-		}
-	}
-#endif
 
 	error = radix_tree_preload(gfp_mask);
 	if (!error) {
