@@ -1047,7 +1047,7 @@ void mali_executor_abort_session(struct mali_session_data *session)
 void mali_executor_core_scaling_enable(void)
 {
 	/* PS: Core scaling is by default enabled */
-	core_scaling_enabled = MALI_TRUE;
+	core_scaling_enabled = MALI_FALSE;
 }
 
 void mali_executor_core_scaling_disable(void)
