@@ -681,6 +681,10 @@ xmit_send:
 	        return NETDEV_TX_OK;
         }
         
+
+	req->length = length;
+
+	retval = usb_ep_queue(in, req, GFP_ATOMIC);
 	switch (retval) {
 	default:
 		DBG(dev, "tx queue err %d\n", retval);
