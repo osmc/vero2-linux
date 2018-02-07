@@ -290,8 +290,6 @@ static irqreturn_t amlogic_cec_irq_handler(int irq, void *dummy)
     tx_msg_state = amlogic_cec_read_reg(CEC_TX_MSG_STATUS);
     rx_msg_state = amlogic_cec_read_reg(CEC_RX_MSG_STATUS);
 
-    amlogic_cec_log_dbg("cec msg status: rx: 0x%x; tx: 0x%x\n", rx_msg_state, tx_msg_state);
-
     if ((tx_msg_state == TX_DONE) || (tx_msg_state == TX_ERROR))
     {
         switch (tx_msg_state) {
@@ -465,7 +463,6 @@ static ssize_t amlogic_cec_write(struct file *file, const char __user *buffer,
     if (down_interruptible(&init_mutex))
     {
         amlogic_cec_log_dbg("error during wait on state change\n");
-        printk(KERN_ERR "[amlogic] ##### cec write error! #####\n");
         return -ERESTARTSYS;
     }
 
@@ -475,7 +472,6 @@ static ssize_t amlogic_cec_write(struct file *file, const char __user *buffer,
         atomic_read(&cec_tx_struct.state) != STATE_TX, 2 * HZ) <= 0)
     {
         amlogic_cec_log_dbg("error during wait on state change, resetting\n");
-        printk(KERN_ERR "[amlogic] ##### cec write error! #####\n");
         cec_hw_reset();
         retval = -ERESTARTSYS;
         goto error_exit;
@@ -483,7 +479,6 @@ static ssize_t amlogic_cec_write(struct file *file, const char __user *buffer,
 
     if (atomic_read(&cec_tx_struct.state) != STATE_DONE)
     {
-        printk(KERN_ERR "[amlogic] ##### cec write error! #####\n");
         retval = -1;
     }
 
