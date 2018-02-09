@@ -2019,15 +2019,18 @@ void root_func(){
 	};
 /// ***************************************************************************************
 ///	-	Ethernet
-        ethmac: ethernet@0xc9410000{
-                compatible = "amlogic,meson8b-rmii-dwmac", "snps,dwmac";
-                reg = <0xc9410000 0x10000
-                       0xc1108108 0x4>;
-                interrupts = <0 8 1>;
-                interrupt-names = "macirq";
-                clocks = "clk81";
-                clock-names = "stmmaceth";
-        };
+//$$ MODULE="Ethernet"
+//$$ DEVICE="meson-eth"
+//$$ L2 PROP_STR = "status"
+    meson-eth{
+		compatible = "amlogic,meson-eth";
+		dev_name = "meson-eth";
+		status = "okay";
+		ethbaseaddr = <0xfe0c0000>;
+		interruptnum = <40>;
+		new_maclogic = <1>;
+		reset_delay = <200>;
+	};
 
 /// ***************************************************************************************
 ///	-	RNG
