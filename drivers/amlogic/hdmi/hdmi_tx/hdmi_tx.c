@@ -140,7 +140,7 @@ static unsigned char init_powermode=0;
 #undef DISABLE_AUDIO
 unsigned char hdmi_audio_off_flag = 0;        //if set to 1, then HDMI will output no audio
                                                 //In KTV case, HDMI output Picture only, and Audio is driven by other sources.
-static int hpdmode = 1; /*
+static int hpdmode = 0; /*
                             0, do not unmux hpd when off or unplug ;
                             1, unmux hpd when unplug;
                             2, unmux hpd when unplug  or off;
